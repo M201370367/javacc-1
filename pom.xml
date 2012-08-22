@@ -1,0 +1,252 @@
+<?xml version="1.0"?>
+<project>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>net.java.dev.javacc</groupId>
+    <artifactId>javacc</artifactId>
+    <packaging>jar</packaging>
+    <name>JavaCC</name>
+    <version>5.0</version>
+    <description>JavaCC is a parser/scanner generator for Java</description>
+    <url>https://javacc.dev.java.net/</url>
+    <licenses>
+        <license>
+            <name>Berkeley Software Distribution (BSD) License</name>
+            <url>http://www.opensource.org/licenses/bsd-license.html</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>    
+    <dependencies>
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>6.3.1</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.5.1</version>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                    <excludes>
+                        <exclude>**/*Test.java</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>javacc-maven-plugin</artifactId>
+                <version>2.6</version>
+                <executions>
+                    <execution>
+                        <id>jcc</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>javacc</goal>
+                        </goals>
+                        <configuration>
+                            <packageName>org.javacc.parser</packageName>
+                            <sourceDirectory>src/main/javacc/org/javacc/parser</sourceDirectory>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>jjt</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>jjtree</goal>
+                        </goals>
+                        <configuration>
+                            <excludes>
+                                <exclude>**/parser/**</exclude>
+                            </excludes>
+                            <packageName>org.javacc.jjtree</packageName>
+                            <sourceDirectory>src/main/javacc/org/javacc/jjtree</sourceDirectory>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>jjt-jcc</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>javacc</goal>
+                        </goals>
+                        <configuration>
+                            <packageName>org.javacc.jjtree</packageName>
+                            <sourceDirectory>target/generated-sources/jjtree</sourceDirectory>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>utils-jcc</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>javacc</goal>
+                        </goals>
+                        <configuration>
+                            <packageName>org.javacc.utils</packageName>
+                            <sourceDirectory>src/main/javacc/org/javacc/utils</sourceDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.12</version>
+                <configuration>
+                    <redirectTestOutputToFile>true</redirectTestOutputToFile>
+                    <forkMode>once</forkMode>
+                    <includes>
+                        <include>**/*Test.java</include>
+                    </includes>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>      
+                    <execution>
+                        <id>overwrite</id>
+                        <phase>process-sources</phase>
+                        <configuration>
+                            <tasks>
+                                <delete file="${project.build.directory}/generated-sources/jjtree/org/javacc/jjtree/ASTBNF.java" />
+                                <delete file="${project.build.directory}/generated-sources/jjtree/org/javacc/jjtree/ASTBNFAction.java" />
+                                <delete file="${project.build.directory}/generated-sources/jjtree/org/javacc/jjtree/ASTBNFDeclaration.java" />
+                                <delete file="${project.build.directory}/generated-sources/jjtree/org/javacc/jjtree/ASTBNFNodeScope.java" />
+                                <delete file="${project.build.directory}/generated-sources/jjtree/org/javacc/jjtree/ASTCompilationUnit.java" />
+                                <delete file="${project.build.directory}/generated-sources/jjtree/org/javacc/jjtree/ASTExpansionNodeScope.java" />
+                                <delete file="${project.build.directory}/generated-sources/jjtree/org/javacc/jjtree/ASTGrammar.java" />
+                                <delete file="${project.build.directory}/generated-sources/jjtree/org/javacc/jjtree/ASTJavacode.java" />
+                                <delete file="${project.build.directory}/generated-sources/jjtree/org/javacc/jjtree/ASTJavacodeBody.java" />
+                                <delete file="${project.build.directory}/generated-sources/jjtree/org/javacc/jjtree/ASTLHS.java" />
+                                <delete file="${project.build.directory}/generated-sources/jjtree/org/javacc/jjtree/ASTNodeDescriptor.java" />
+                                <delete file="${project.build.directory}/generated-sources/jjtree/org/javacc/jjtree/ASTNodeDescriptorExpression.java" />
+                                <delete file="${project.build.directory}/generated-sources/jjtree/org/javacc/jjtree/ASTOptionBinding.java" />
+                                <delete file="${project.build.directory}/generated-sources/jjtree/org/javacc/jjtree/ASTOptions.java" />
+                                <delete file="${project.build.directory}/generated-sources/jjtree/org/javacc/jjtree/ASTProduction.java" />
+                                <delete file="${project.build.directory}/generated-sources/jjtree/org/javacc/jjtree/IO.java" />
+                                <delete file="${project.build.directory}/generated-sources/jjtree/org/javacc/jjtree/JJTree.java" />
+                                <delete file="${project.build.directory}/generated-sources/jjtree/org/javacc/jjtree/JJTreeGlobals.java" />
+                                <delete file="${project.build.directory}/generated-sources/jjtree/org/javacc/jjtree/JJTreeIOException.java" />
+                                <delete file="${project.build.directory}/generated-sources/jjtree/org/javacc/jjtree/JJTreeOptions.java" />
+                                <delete file="${project.build.directory}/generated-sources/jjtree/org/javacc/jjtree/JJTreeOptionsTest.java" />
+                                <delete file="${project.build.directory}/generated-sources/jjtree/org/javacc/jjtree/JJTreeState.java" />
+                                <delete file="${project.build.directory}/generated-sources/jjtree/org/javacc/jjtree/Main.java" />
+                                <delete file="${project.build.directory}/generated-sources/jjtree/org/javacc/jjtree/NodeFiles.java" />
+                                <delete file="${project.build.directory}/generated-sources/jjtree/org/javacc/jjtree/NodeScope.java" />
+                                <delete file="${project.build.directory}/generated-sources/jjtree/org/javacc/jjtree/SimpleNode.java" />
+                                <delete file="${project.build.directory}/generated-sources/jjtree/org/javacc/jjtree/Token.java" />
+                                <delete file="${project.build.directory}/generated-sources/jjtree/org/javacc/jjtree/TokenUtils.java" />
+
+                                <delete file="${project.build.directory}/generated-sources/jjtree/ASTBNF.java" />
+                                <delete file="${project.build.directory}/generated-sources/jjtree/ASTBNFAction.java" />
+                                <delete file="${project.build.directory}/generated-sources/jjtree/ASTBNFDeclaration.java" />
+                                <delete file="${project.build.directory}/generated-sources/jjtree/ASTBNFNodeScope.java" />
+                                <delete file="${project.build.directory}/generated-sources/jjtree/ASTCompilationUnit.java" />
+                                <delete file="${project.build.directory}/generated-sources/jjtree/ASTExpansionNodeScope.java" />
+                                <delete file="${project.build.directory}/generated-sources/jjtree/ASTGrammar.java" />
+                                <delete file="${project.build.directory}/generated-sources/jjtree/ASTJavacode.java" />
+                                <delete file="${project.build.directory}/generated-sources/jjtree/ASTJavacodeBody.java" />
+                                <delete file="${project.build.directory}/generated-sources/jjtree/ASTLHS.java" />
+                                <delete file="${project.build.directory}/generated-sources/jjtree/ASTNodeDescriptor.java" />
+                                <delete file="${project.build.directory}/generated-sources/jjtree/ASTNodeDescriptorExpression.java" />
+                                <delete file="${project.build.directory}/generated-sources/jjtree/ASTOptionBinding.java" />
+                                <delete file="${project.build.directory}/generated-sources/jjtree/ASTOptions.java" />
+                                <delete file="${project.build.directory}/generated-sources/jjtree/ASTProduction.java" />
+                                <delete file="${project.build.directory}/generated-sources/jjtree/IO.java" />
+                                <delete file="${project.build.directory}/generated-sources/jjtree/JJTree.java" />
+                                <delete file="${project.build.directory}/generated-sources/jjtree/JJTreeGlobals.java" />
+                                <delete file="${project.build.directory}/generated-sources/jjtree/JJTreeIOException.java" />
+                                <delete file="${project.build.directory}/generated-sources/jjtree/JJTreeOptions.java" />
+                                <delete file="${project.build.directory}/generated-sources/jjtree/JJTreeOptionsTest.java" />
+                                <delete file="${project.build.directory}/generated-sources/jjtree/JJTreeState.java" />
+                                <delete file="${project.build.directory}/generated-sources/jjtree/Main.java" />
+                                <delete file="${project.build.directory}/generated-sources/jjtree/NodeFiles.java" />
+                                <delete file="${project.build.directory}/generated-sources/jjtree/NodeScope.java" />
+                                <delete file="${project.build.directory}/generated-sources/jjtree/SimpleNode.java" />
+                                <delete file="${project.build.directory}/generated-sources/jjtree/Token.java" />
+                                <delete file="${project.build.directory}/generated-sources/jjtree/TokenUtils.java" />
+
+                                <delete file="${project.build.directory}/generated-sources/javacc/org/javacc/jjtree/Token.java" />
+
+
+                                <delete file="${project.build.directory}/generated-sources/javacc/org/javacc/parser/Action.java" />
+                                <delete file="${project.build.directory}/generated-sources/javacc/org/javacc/parser/BNFProduction.java" />
+                                <delete file="${project.build.directory}/generated-sources/javacc/org/javacc/parser/CharacterRange.java" />
+                                <delete file="${project.build.directory}/generated-sources/javacc/org/javacc/parser/Choice.java" />
+                                <delete file="${project.build.directory}/generated-sources/javacc/org/javacc/parser/Container.java" />
+                                <delete file="${project.build.directory}/generated-sources/javacc/org/javacc/parser/Expansion.java" />
+                                <delete file="${project.build.directory}/generated-sources/javacc/org/javacc/parser/ExpansionTest.java" />
+                                <delete file="${project.build.directory}/generated-sources/javacc/org/javacc/parser/ExpansionTreeWalker.java" />
+                                <delete file="${project.build.directory}/generated-sources/javacc/org/javacc/parser/JavaCCErrors.java" />
+                                <delete file="${project.build.directory}/generated-sources/javacc/org/javacc/parser/JavaCCGlobals.java" />
+                                <delete file="${project.build.directory}/generated-sources/javacc/org/javacc/parser/JavaCCParserInternals.java" />
+
+                                <!-- 
+                                JavaCCParser.java
+                                JavaCCParserConstants.java
+                                JavaCCParserTokenManager.java
+                                JavaCharStream.java
+                                ParseException.java
+                                -->
+                                <delete file="${project.build.directory}/generated-sources/javacc/org/javacc/parser/JavaCodeProduction.java" />
+                                <delete file="${project.build.directory}/generated-sources/javacc/org/javacc/parser/JavaFiles.java" />
+                                <delete file="${project.build.directory}/generated-sources/javacc/org/javacc/parser/LexGen.java" />
+                                <delete file="${project.build.directory}/generated-sources/javacc/org/javacc/parser/Lookahead.java" />
+                                <delete file="${project.build.directory}/generated-sources/javacc/org/javacc/parser/LookaheadCalc.java" />
+                                <delete file="${project.build.directory}/generated-sources/javacc/org/javacc/parser/LookaheadWalk.java" />
+                                <delete file="${project.build.directory}/generated-sources/javacc/org/javacc/parser/Main.java" />
+                                <delete file="${project.build.directory}/generated-sources/javacc/org/javacc/parser/MatchInfo.java" />
+                                <delete file="${project.build.directory}/generated-sources/javacc/org/javacc/parser/MetaParseException.java" />
+                                <delete file="${project.build.directory}/generated-sources/javacc/org/javacc/parser/Nfa.java" />
+                                <delete file="${project.build.directory}/generated-sources/javacc/org/javacc/parser/NfaState.java" />
+                                <delete file="${project.build.directory}/generated-sources/javacc/org/javacc/parser/NonTerminal.java" />
+                                <delete file="${project.build.directory}/generated-sources/javacc/org/javacc/parser/NormalProduction.java" />
+                                <delete file="${project.build.directory}/generated-sources/javacc/org/javacc/parser/OneOrMore.java" />
+                                <delete file="${project.build.directory}/generated-sources/javacc/org/javacc/parser/Options.java" />
+                                <delete file="${project.build.directory}/generated-sources/javacc/org/javacc/parser/OptionsTest.java" />
+                                <delete file="${project.build.directory}/generated-sources/javacc/org/javacc/parser/OtherFilesGen.java" />
+                                <delete file="${project.build.directory}/generated-sources/javacc/org/javacc/parser/ParseEngine.java" />
+                                <delete file="${project.build.directory}/generated-sources/javacc/org/javacc/parser/ParseGen.java" />
+                                <delete file="${project.build.directory}/generated-sources/javacc/org/javacc/parser/RCharacterList.java" />
+                                <delete file="${project.build.directory}/generated-sources/javacc/org/javacc/parser/RChoice.java" />
+                                <delete file="${project.build.directory}/generated-sources/javacc/org/javacc/parser/REndOfFile.java" />
+                                <delete file="${project.build.directory}/generated-sources/javacc/org/javacc/parser/RJustName.java" />
+                                <delete file="${project.build.directory}/generated-sources/javacc/org/javacc/parser/ROneOrMore.java" />
+                                <delete file="${project.build.directory}/generated-sources/javacc/org/javacc/parser/RRepetitionRange.java" />
+                                <delete file="${project.build.directory}/generated-sources/javacc/org/javacc/parser/RSequence.java" />
+                                <delete file="${project.build.directory}/generated-sources/javacc/org/javacc/parser/RStringLiteral.java" />
+                                <delete file="${project.build.directory}/generated-sources/javacc/org/javacc/parser/RZeroOrMore.java" />
+                                <delete file="${project.build.directory}/generated-sources/javacc/org/javacc/parser/RZeroOrOne.java" />
+                                <delete file="${project.build.directory}/generated-sources/javacc/org/javacc/parser/RegExprSpec.java" />
+                                <delete file="${project.build.directory}/generated-sources/javacc/org/javacc/parser/RegularExpression.java" />
+                                <delete file="${project.build.directory}/generated-sources/javacc/org/javacc/parser/Semanticize.java" />
+                                <delete file="${project.build.directory}/generated-sources/javacc/org/javacc/parser/Sequence.java" />
+                                <delete file="${project.build.directory}/generated-sources/javacc/org/javacc/parser/SingleCharacter.java" />
+                                <delete file="${project.build.directory}/generated-sources/javacc/org/javacc/parser/Token.java" />
+                                <!-- 
+                                <delete file="${project.build.directory}/generated-sources/javacc/org/javacc/parser/TokenMgrError.java" />
+                                -->
+                                <delete file="${project.build.directory}/generated-sources/javacc/org/javacc/parser/TokenProduction.java" />
+                                <delete file="${project.build.directory}/generated-sources/javacc/org/javacc/parser/TreeWalkerOp.java" />
+                                <delete file="${project.build.directory}/generated-sources/javacc/org/javacc/parser/TryBlock.java" />
+                                <delete file="${project.build.directory}/generated-sources/javacc/org/javacc/parser/ZeroOrMore.java" />
+                                <delete file="${project.build.directory}/generated-sources/javacc/org/javacc/parser/ZeroOrOne.java" />
+    
+                            </tasks>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>
+
